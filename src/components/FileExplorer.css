@@ -1,0 +1,318 @@
+.file-explorer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #1a1a1a;
+  color: #a0a0a0;
+  font-size: 12px;
+  user-select: none;
+  min-width: 180px;
+}
+
+.file-explorer.maximized {
+  min-width: 250px;
+}
+
+.file-explorer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #888888;
+  background-color: #141414;
+  border-bottom: 1px solid #2a2a2a;
+  flex-shrink: 0;
+}
+
+.file-explorer-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.explorer-action-btn {
+  background: none;
+  border: none;
+  color: #888888;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 3px;
+  line-height: 1;
+}
+
+.explorer-action-btn:hover {
+  background-color: #333333;
+  color: #cccccc;
+}
+
+.explorer-action-btn.multi-mode-btn {
+  color: #4CAF50;
+}
+
+.explorer-action-btn.multi-mode-btn:hover {
+  background-color: #2a3a2a;
+  color: #6FCF70;
+}
+
+.add-file-dialog {
+  padding: 8px;
+  background-color: #1e1e1e;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.add-dialog-header {
+  font-size: 11px;
+  font-weight: 600;
+  color: #cccccc;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.folder-select {
+  width: 100%;
+  padding: 6px 8px;
+  background-color: #0d0d0d;
+  border: 1px solid #3a3a3a;
+  color: #cccccc;
+  font-size: 12px;
+  border-radius: 3px;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+
+.folder-select:focus {
+  outline: none;
+  border-color: #007acc;
+}
+
+.folder-select option {
+  background-color: #1e1e1e;
+  color: #cccccc;
+}
+
+.add-file-dialog input {
+  width: 100%;
+  padding: 6px 8px;
+  background-color: #0d0d0d;
+  border: 1px solid #3a3a3a;
+  color: #cccccc;
+  font-size: 12px;
+  border-radius: 3px;
+  margin-bottom: 6px;
+}
+
+.add-file-dialog input:focus {
+  outline: none;
+  border-color: #007acc;
+}
+
+.add-file-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.add-file-actions button {
+  padding: 4px 10px;
+  font-size: 11px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.add-file-actions button:first-child {
+  background-color: #007acc;
+  color: white;
+}
+
+.add-file-actions button:last-child {
+  background-color: #333333;
+  color: #cccccc;
+}
+
+.add-file-actions button:hover {
+  opacity: 0.9;
+}
+
+.file-explorer-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px 0;
+}
+
+.file-explorer-content.maximized-content {
+  overflow-x: auto;
+}
+
+.file-explorer-content.drag-over-root {
+  background-color: #1a2a1a;
+  outline: 1px dashed #4CAF50;
+  outline-offset: -2px;
+}
+
+.tree-node {
+  width: 100%;
+}
+
+.tree-node.compact .tree-item {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.tree-item {
+  display: flex;
+  align-items: center;
+  padding: 3px 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+.tree-item:hover {
+  background-color: #252525;
+}
+
+.tree-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+  padding-left: 8px;
+}
+
+.tree-action-btn {
+  background: none;
+  border: none;
+  padding: 2px 4px;
+  cursor: pointer;
+  font-size: 12px;
+  opacity: 0.7;
+  border-radius: 3px;
+  line-height: 1;
+}
+
+.tree-action-btn:hover {
+  opacity: 1;
+  background-color: #3a3a3a;
+}
+
+.tree-action-btn.delete:hover {
+  background-color: #5a2a2a;
+}
+
+.tree-item.drag-over {
+  background-color: #2a4a2a;
+  outline: 1px dashed #4CAF50;
+}
+
+.tree-item.active {
+  background-color: #0a4070;
+  color: #ffffff;
+}
+
+.tree-item.open {
+  color: #c9a55c;
+}
+
+.expand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  font-size: 7px;
+  transition: transform 0.1s ease;
+  color: #888888;
+  flex-shrink: 0;
+}
+
+.expand-icon.expanded {
+  transform: rotate(90deg);
+}
+
+.expand-icon-placeholder {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.file-icon {
+  margin-right: 5px;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.empty-explorer {
+  padding: 16px;
+  text-align: center;
+  color: #555555;
+  font-style: italic;
+}
+
+.empty-explorer p {
+  margin: 0 0 12px 0;
+}
+
+.empty-explorer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.add-first-file-btn {
+  padding: 6px 12px;
+  font-size: 11px;
+  background-color: #007acc;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  min-width: 100px;
+}
+
+.add-first-file-btn:hover {
+  background-color: #005a99;
+}
+
+.add-first-file-btn.folder-btn {
+  background-color: #4a4a4a;
+}
+
+.add-first-file-btn.folder-btn:hover {
+  background-color: #5a5a5a;
+}
+
+.tree-children {
+  width: 100%;
+}
+
+/* Scrollbar styling */
+.file-explorer-content::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.file-explorer-content::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.file-explorer-content::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
+}
+
+.file-explorer-content::-webkit-scrollbar-thumb:hover {
+  background: #444444;
+}
