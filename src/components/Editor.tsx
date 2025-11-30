@@ -257,6 +257,9 @@ export const MultiSchemaEditor: React.FC<MultiSchemaEditorProps> = ({
     const [isMaximized, setIsMaximized] = useState(false);
     const [monacoInstance, setMonacoInstance] = useState<any>(null);
     const completionDisposableRef = React.useRef<any>(null);
+    const [explorerWidth, setExplorerWidth] = useState(280);
+    const [explorerHeight, setExplorerHeight] = useState(140);
+    const [isResizing, setIsResizing] = useState(false);
     
     // Re-register autocomplete when schemasMap changes
     useEffect(() => {
@@ -278,6 +281,45 @@ export const MultiSchemaEditor: React.FC<MultiSchemaEditorProps> = ({
             }
         };
     }, [monacoInstance, schemasMap]);
+
+    // Resize handlers
+    const handleResizeStart = useCallback((e: React.MouseEvent) => {
+        e.preventDefault();
+        setIsResizing(true);
+    }, []);
+
+    const handleResizeMove = useCallback((e: MouseEvent) => {
+        if (!isResizing) return;
+        
+        if (isMaximized) {
+            // Horizontal resize (side-by-side)
+            const newWidth = e.clientX;
+            if (newWidth >= 200 && newWidth <= 600) {
+                setExplorerWidth(newWidth);
+            }
+        } else {
+            // Vertical resize (stacked)
+            const newHeight = e.clientY;
+            if (newHeight >= 100 && newHeight <= 400) {
+                setExplorerHeight(newHeight);
+            }
+        }
+    }, [isResizing, isMaximized]);
+
+    const handleResizeEnd = useCallback(() => {
+        setIsResizing(false);
+    }, []);
+
+    useEffect(() => {
+        if (isResizing) {
+            document.addEventListener('mousemove', handleResizeMove);
+            document.addEventListener('mouseup', handleResizeEnd);
+            return () => {
+                document.removeEventListener('mousemove', handleResizeMove);
+                document.removeEventListener('mouseup', handleResizeEnd);
+            };
+        }
+    }, [isResizing, handleResizeMove, handleResizeEnd]);
 
     // Open file when selectedSchemaPath changes (from node click)
     useEffect(() => {
@@ -437,8 +479,11 @@ export const MultiSchemaEditor: React.FC<MultiSchemaEditorProps> = ({
     const currentContent = useMemo(() => getCurrentContent(), [getCurrentContent]);
 
     return (
-        <div className={`multi-schema-editor ${isMaximized ? 'maximized' : ''}`}>
-            <div className={`explorer-section ${isMaximized ? 'maximized' : ''}`}>
+        <div className={`multi-schema-editor ${isMaximized ? 'maximized' : ''} ${isResizing ? 'resizing' : ''}`}>
+            <div 
+                className={`explorer-section ${isMaximized ? 'maximized' : ''}`}
+                style={isMaximized ? { width: `${explorerWidth}px` } : { height: `${explorerHeight}px` }}
+            >
                 <FileExplorer
                     schemasMap={schemasMap}
                     activeFile={activeFile}
@@ -454,6 +499,10 @@ export const MultiSchemaEditor: React.FC<MultiSchemaEditorProps> = ({
                     onDragStateReset={onDragStateReset}
                 />
             </div>
+            <div 
+                className={`editor-resize-handle ${isMaximized ? 'horizontal' : 'vertical'}`}
+                onMouseDown={handleResizeStart}
+            />
             <div className="editor-area">
                 <div className="tab-bar">
                     {openTabs.length > 0 ? (
