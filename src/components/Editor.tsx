@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import Editor, { type OnMount } from '@monaco-editor/react';
 import { FileExplorer } from './FileExplorer';
 import { SchemaTab } from './SchemaTab';
@@ -283,6 +283,7 @@ export const MultiSchemaEditor: React.FC<MultiSchemaEditorProps> = ({
     }, [monacoInstance, schemasMap]);
 
     // Resize handlers
+    const containerRef = useRef<HTMLDivElement>(null);
     const handleResizeStart = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
         setIsResizing(true);
@@ -299,9 +300,12 @@ export const MultiSchemaEditor: React.FC<MultiSchemaEditorProps> = ({
             }
         } else {
             // Vertical resize (stacked)
-            const newHeight = e.clientY;
-            if (newHeight >= 100 && newHeight <= 400) {
-                setExplorerHeight(newHeight);
+            if (containerRef.current) {
+                const containerRect = containerRef.current.getBoundingClientRect();
+                const newHeight = e.clientY - containerRect.top;
+                if (newHeight >= 100 && newHeight <= 400) {
+                    setExplorerHeight(newHeight);
+                }
             }
         }
     }, [isResizing, isMaximized]);
@@ -479,7 +483,7 @@ export const MultiSchemaEditor: React.FC<MultiSchemaEditorProps> = ({
     const currentContent = useMemo(() => getCurrentContent(), [getCurrentContent]);
 
     return (
-        <div className={`multi-schema-editor ${isMaximized ? 'maximized' : ''} ${isResizing ? 'resizing' : ''}`}>
+        <div ref={containerRef} className={`multi-schema-editor ${isMaximized ? 'maximized' : ''} ${isResizing ? 'resizing' : ''}`}>
             <div 
                 className={`explorer-section ${isMaximized ? 'maximized' : ''}`}
                 style={isMaximized ? { width: `${explorerWidth}px` } : { height: `${explorerHeight}px` }}
