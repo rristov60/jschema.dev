@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import './FileExplorer.css';
-import { FaFile, FaFileCirclePlus, FaFolder, FaFolderClosed, FaFolderOpen, FaFolderPlus, FaTrash } from 'react-icons/fa6';
+import { FaCopy, FaFile, FaFileCirclePlus, FaFolder, FaFolderClosed, FaFolderOpen, FaFolderPlus, FaTrash } from 'react-icons/fa6';
 import { PiSquareSplitHorizontal, PiSquareSplitVertical } from 'react-icons/pi';
 
 interface FileNode {
@@ -111,12 +111,12 @@ const TreeNode: React.FC<{
           <div className="tree-item-actions">
             {!node.isDirectory && onCopyFile && (
               <button className="tree-action-btn" onClick={handleCopy} title="Copy file">
-                📋
+                <FaCopy />
               </button>
             )}
             {onDeleteFile && (
               <button className="tree-action-btn delete" onClick={handleDelete} title={node.isDirectory ? "Delete folder" : "Delete file"}>
-                🗑️
+                <FaTrash />
               </button>
             )}
           </div>
