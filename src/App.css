@@ -53,6 +53,7 @@
 
 .main-content.resizing {
   user-select: none;
+  cursor: ew-resize;
 }
 
 .main-content.resizing * {

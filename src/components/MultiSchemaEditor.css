@@ -48,6 +48,11 @@
 
 .multi-schema-editor.resizing {
   user-select: none;
+  cursor: ns-resize;
+}
+
+.multi-schema-editor.maximized.resizing {
+  cursor: ew-resize;
 }
 
 .multi-schema-editor.resizing * {
