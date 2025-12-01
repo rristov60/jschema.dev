@@ -1,5 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import './FileExplorer.css';
+import { FaFile, FaFileCirclePlus, FaFolder, FaFolderClosed, FaFolderOpen, FaFolderPlus, FaTrash } from 'react-icons/fa6';
+import { PiSquareSplitHorizontal, PiSquareSplitVertical } from 'react-icons/pi';
 
 interface FileNode {
   name: string;
@@ -28,9 +30,9 @@ type AddType = 'file' | 'folder' | null;
 
 const FileIcon: React.FC<{ isDirectory: boolean; isExpanded?: boolean }> = ({ isDirectory, isExpanded }) => {
   if (isDirectory) {
-    return <span className="file-icon">{isExpanded ? '📂' : '📁'}</span>;
+    return <span className="file-icon">{isExpanded ? <FaFolderOpen /> : <FaFolderClosed />}</span>;
   }
-  return <span className="file-icon">📄</span>;
+  return <span className="file-icon"><FaFile /></span>;
 };
 
 const TreeNode: React.FC<{
@@ -378,14 +380,14 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
                 onClick={() => openAddDialog('file')}
                 title="Add new file"
               >
-                +
+                <FaFileCirclePlus />
               </button>
               <button 
                 className="explorer-action-btn" 
                 onClick={() => openAddDialog('folder')}
                 title="Add new folder"
               >
-                📁+
+                <FaFolderPlus />
               </button>
             </>
           )}
@@ -399,16 +401,16 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
               }}
               title="Clear all schemas"
             >
-              🗑️
+              <FaTrash />
             </button>
           )}
           {onToggleMaximize && (
             <button 
-              className="explorer-action-btn" 
+              className="explorer-action-btn split-mode-btn" 
               onClick={onToggleMaximize}
               title={isMaximized ? 'Minimize' : 'Maximize'}
             >
-              {isMaximized ? '⊟' : '⊞'}
+              {isMaximized ? <PiSquareSplitHorizontal /> : <PiSquareSplitVertical />}
             </button>
           )}
         </div>
@@ -498,13 +500,13 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
                   className="add-first-file-btn"
                   onClick={() => openAddDialog('file')}
                 >
-                  + Add Schema
+                  <FaFile /> + Add Schema
                 </button>
                 <button 
                   className="add-first-file-btn folder-btn"
                   onClick={() => openAddDialog('folder')}
                 >
-                  📁 Add Folder
+                  <FaFolder /> + Add Folder
                 </button>
               </div>
             )}
