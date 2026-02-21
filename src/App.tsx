@@ -1104,8 +1104,8 @@ function App() {
           className={`editor-pane ${isEditorMinimized ? 'minimized' : ''} ${viewMode === 'multi' ? 'multi-mode' : ''} ${isResizingPane ? 'resizing-pane' : ''}`}
           style={!isEditorMinimized ? { width: `${editorPaneWidth}%`, maxWidth: 'none' } : {}}
         >
-          {!isEditorMinimized && (
-            viewMode === 'multi' && schemasMap.size > 0 ? (
+          <div style={{ display: isEditorMinimized ? 'none' : 'contents' }}>
+            {viewMode === 'multi' && schemasMap.size > 0 ? (
               <MultiSchemaEditor 
                 schemasMap={schemasMap} 
                 onPropertyClick={handleEditorClick}
@@ -1211,15 +1211,14 @@ function App() {
                   });
                 }}
               />
-            )
-          )}
+            )}
+          </div>
         </div>
-        {!isEditorMinimized && (
-          <div 
-            className="pane-resize-handle"
-            onMouseDown={handlePaneResizeStart}
-          />
-        )}
+        <div 
+          className="pane-resize-handle"
+          onMouseDown={handlePaneResizeStart}
+          style={{ display: isEditorMinimized ? 'none' : undefined }}
+        />
         <div className="visualizer-pane">
           <Visualizer
             nodes={nodes}
