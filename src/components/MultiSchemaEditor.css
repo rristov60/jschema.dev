@@ -5,10 +5,25 @@
   height: 100%;
   width: 100%;
   background-color: #1e1e1e;
+  position: relative;
 }
 
 .json-editor-container.maximized {
   flex-direction: row;
+}
+
+.json-editor-container.resizing {
+  user-select: none;
+  cursor: ns-resize;
+}
+
+.json-editor-container.maximized.resizing {
+  cursor: ew-resize;
+}
+
+.json-editor-container.resizing * {
+  user-select: none;
+  pointer-events: none;
 }
 
 .json-editor-container .explorer-section {

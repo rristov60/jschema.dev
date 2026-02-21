@@ -124,6 +124,52 @@ export const JsonEditor: React.FC<JsonEditorProps> = ({
     const [activeFile, setActiveFile] = useState<string | null>(null);
     const [monacoInstance, setMonacoInstance] = useState<any>(null);
     const completionDisposableRef = React.useRef<any>(null);
+    const [explorerWidth, setExplorerWidth] = useState(280);
+    const [explorerHeight, setExplorerHeight] = useState(140);
+    const [isResizing, setIsResizing] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    // Resize handlers
+    const handleResizeStart = useCallback((e: React.MouseEvent) => {
+        e.preventDefault();
+        setIsResizing(true);
+    }, []);
+
+    const handleResizeMove = useCallback((e: MouseEvent) => {
+        if (!isResizing) return;
+        
+        if (isMaximized) {
+            // Horizontal resize (side-by-side)
+            const newWidth = e.clientX;
+            if (newWidth >= 200 && newWidth <= 600) {
+                setExplorerWidth(newWidth);
+            }
+        } else {
+            // Vertical resize (stacked)
+            if (containerRef.current) {
+                const containerRect = containerRef.current.getBoundingClientRect();
+                const newHeight = e.clientY - containerRect.top;
+                if (newHeight >= 100 && newHeight <= 400) {
+                    setExplorerHeight(newHeight);
+                }
+            }
+        }
+    }, [isResizing, isMaximized]);
+
+    const handleResizeEnd = useCallback(() => {
+        setIsResizing(false);
+    }, []);
+
+    useEffect(() => {
+        if (isResizing) {
+            document.addEventListener('mousemove', handleResizeMove);
+            document.addEventListener('mouseup', handleResizeEnd);
+            return () => {
+                document.removeEventListener('mousemove', handleResizeMove);
+                document.removeEventListener('mouseup', handleResizeEnd);
+            };
+        }
+    }, [isResizing, handleResizeMove, handleResizeEnd]);
 
     // Re-register autocomplete when schemasMap changes
     useEffect(() => {
@@ -197,9 +243,12 @@ export const JsonEditor: React.FC<JsonEditorProps> = ({
     const canSwitchToMulti = schemasMap && schemasMap.size >= 1 && onSwitchToMultiMode;
 
     return (
-        <div className={`json-editor-container ${isMaximized ? 'maximized' : ''}`}>
+        <div ref={containerRef} className={`json-editor-container ${isMaximized ? 'maximized' : ''} ${isResizing ? 'resizing' : ''}`}>
             {showExplorer && (
-                <div className={`explorer-section ${isMaximized ? 'maximized' : ''}`}>
+                <div 
+                    className={`explorer-section ${isMaximized ? 'maximized' : ''}`}
+                    style={isMaximized ? { width: `${explorerWidth}px` } : { height: `${explorerHeight}px` }}
+                >
                     <FileExplorer
                         schemasMap={schemasMap || new Map()}
                         activeFile={activeFile}
@@ -216,6 +265,12 @@ export const JsonEditor: React.FC<JsonEditorProps> = ({
                         onDragStateReset={onDragStateReset}
                     />
                 </div>
+            )}
+            {showExplorer && (
+                <div 
+                    className={`editor-resize-handle ${isMaximized ? 'horizontal' : 'vertical'}`}
+                    onMouseDown={handleResizeStart}
+                />
             )}
             <div className="editor-section">
                 <Editor

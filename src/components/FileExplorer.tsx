@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import './FileExplorer.css';
-import { FaCopy, FaFile, FaFileCirclePlus, FaFolder, FaFolderClosed, FaFolderOpen, FaFolderPlus, FaTrash } from 'react-icons/fa6';
+import { FaCopy, FaFile, FaFileCirclePlus, FaFolder, FaFolderClosed, FaFolderOpen, FaFolderPlus, FaTrash, FaBolt } from 'react-icons/fa6';
 import { PiSquareSplitHorizontal, PiSquareSplitVertical } from 'react-icons/pi';
+
 
 interface FileNode {
   name: string;
@@ -370,7 +371,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
               onClick={onSwitchToMultiMode}
               title="Switch to Multi-Schema Mode"
             >
-              ⚡
+              <FaBolt />
             </button>
           )}
           {onAddFile && (
